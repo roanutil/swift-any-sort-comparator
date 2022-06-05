@@ -1,0 +1,8 @@
+--extensionacl on-declarations
+--redundanttype explicit
+--swiftversion 5.6
+--maxwidth 120
+--header "{file}\nAnySortComparator\n\n\nMIT License\n\nCopyright © {year} Andrew Roan"
+--allman false
+--wraparguments before-first
+--wrapcollections before-first
