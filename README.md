@@ -1,4 +1,6 @@
 # AnySortComparator
+[![CI](https://github.com/roanutil/swift-any-sort-comparator/actions/workflows/ci.yml/badge.svg)](https://github.com/roanutil/swift-any-sort-comparator/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/roanutil/swift-any-sort-comparator/branch/main/graph/badge.svg?token=Kd8r0wlmvK)](https://codecov.io/gh/roanutil/swift-any-sort-comparator)
 
 `AnySortComparator` is a type erased implementation of the [SortComparator](https://developer.apple.com/documentation/foundation/sortcomparator) `protocol`. 
 
