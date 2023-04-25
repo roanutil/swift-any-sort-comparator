@@ -7,20 +7,40 @@ on:
   pull_request:
     branches:
       - '*'
+  workflow_dispatch:
 
 jobs:
-  library:
-    runs-on: macos-12
+  lint:
+    runs-on: macos-13
     environment: default
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Format lint
         run: swiftformat --lint .
       - name: Lint
         run: swiftlint .
+  macos-test:
+    strategy:
+      matrix:
+        include:
+          - os: macos-12
+            xcode: 13.2.1 # Swift 5.5.2
+          - os: macos-12
+            xcode: 13.4.1 # Swift 5.6
+          - os: macos-13
+            xcode: 14.2 # Swift 5.7
+          - os: macos-13
+            xcode: 14.3 # Swift 5.8
+    runs-on: ${{ matrix.os }}
+    environment: default
+    steps:
+      - uses: actions/checkout@v3
+      - name: Select Xcode ${{ matrix.xcode }}
+        run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
       - name: Run Tests
-        run: swift test --enable-code-coverage
+        run: swift test --enable-code-coverage --parallel
       - name: Swift Coverage Report
-        uses: maxep/spm-lcov-action@0.3.1
-      - name: Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) -X xcodellvm
+        run: xcrun llvm-cov export -format="lcov" .build/debug/swift-any-sort-comparatorPackageTests.xctest/Contents/MacOS/swift-any-sort-comparatorPackageTests -instr-profile .build/debug/codecov/default.profdata > coverage_report.lcov
+      - uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true # optional (default = false)
